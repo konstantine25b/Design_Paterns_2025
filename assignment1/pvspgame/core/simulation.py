@@ -68,8 +68,7 @@ def chase(
                 f"stam={predator.stamina} move={chosen.name}"
             )
             prey_msg = (
-                f"prey pos={prey.position} "
-                f"stam={prey.stamina} move={prey_choice.name}"
+                f"prey pos={prey.position} stam={prey.stamina} move={prey_choice.name}"
             )
             logs.append(f"{pred_msg}; {prey_msg}")
         if predator.position >= prey.position:
