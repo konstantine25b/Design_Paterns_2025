@@ -37,6 +37,20 @@ def _render_world(predator: Creature, prey: Creature, width: int = 50) -> str:
     return "".join(line)
 
 
+def _describe_creature(c: Creature) -> str:
+    parts = [
+        f"pos={c.position}",
+        f"legs={c.legs_count}",
+        f"wings={c.wings_count}",
+        f"claws={c.claws.name}",
+        f"teeth={c.teeth_sharpness}",
+        f"base={c.base_power}",
+        f"stam={c.stamina}",
+        f"hp={c.health}",
+    ]
+    return " ".join(parts)
+
+
 def chase(
     predator: Creature,
     prey: Creature,
@@ -46,6 +60,11 @@ def chase(
     visualize: bool = False,
 ) -> SimulationResult:
     logs: list[str] = []
+    if visualize:
+        pred_desc = _describe_creature(predator)
+        prey_desc = _describe_creature(prey)
+        logs.append(f"Predator: {pred_desc}")
+        logs.append(f"Prey: {prey_desc}")
     while True:
         chosen = movement_strategy.choose(predator)
         if chosen is None:
