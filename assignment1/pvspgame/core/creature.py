@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Protocol
 
 from .types import MOVEMENT_STATS, ClawSize, MovementKind
 
@@ -37,10 +36,6 @@ class Creature:
         return int((self.base_power + self.teeth_sharpness) * self.claws.multiplier)
 
 
-class MovementStrategy(Protocol):
-    def choose(self, creature: Creature) -> MovementKind | None: ...
-
-
 ABILITY_CHECKS: dict[MovementKind, Callable[[Creature], bool]] = {
     MovementKind.CRAWL: lambda c: c.can_crawl(),
     MovementKind.HOP: lambda c: c.can_hop(),
@@ -61,14 +56,6 @@ def can_use_movement(creature: Creature, movement: MovementKind) -> bool:
 
 def allowed_movements(creature: Creature) -> list[MovementKind]:
     return [m for m in MovementKind if can_use_movement(creature, m)]
-
-
-class GreedyMovementStrategy:
-    def choose(self, creature: Creature) -> MovementKind | None:
-        movements = allowed_movements(creature)
-        if not movements:
-            return None
-        return max(movements, key=lambda m: MOVEMENT_STATS[m].speed)
 
 
 def apply_movement(creature: Creature, movement: MovementKind) -> None:

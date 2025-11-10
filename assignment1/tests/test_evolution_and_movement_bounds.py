@@ -26,5 +26,3 @@ def test_apply_movement_no_stamina_no_move() -> None:
     apply_movement(c, MovementKind.WALK)
     assert c.position == 0
     assert c.stamina == 1
-
-

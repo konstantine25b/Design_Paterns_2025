@@ -1,4 +1,5 @@
-from pvspgame.core.creature import Creature, GreedyMovementStrategy
+from pvspgame.core.creature import Creature
+from pvspgame.core.strategies.movement import GreedyMovementStrategy
 from pvspgame.core.types import ClawSize, MovementKind
 
 
@@ -32,5 +33,3 @@ def test_greedy_strategy_prefers_fly_when_possible() -> None:
     strat = GreedyMovementStrategy()
     choice = strat.choose(c)
     assert choice == MovementKind.FLY
-
-

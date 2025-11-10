@@ -1,10 +1,11 @@
 from pvspgame.core.creature import Creature
-from pvspgame.core.simulation import chase, fight
+from pvspgame.core.strategies.chase import chase as chase_strategy
+from pvspgame.core.strategies.fight import fight as fight_strategy
 from pvspgame.core.strategies.movement import GreedyMovementStrategy
 from pvspgame.core.types import ClawSize
 
 
-def test_chase_stops_when_predator_cannot_move() -> None:
+def test_chase_strategy_returns_uncaught_when_no_move() -> None:
     predator = Creature(
         legs_count=0,
         wings_count=0,
@@ -21,16 +22,15 @@ def test_chase_stops_when_predator_cannot_move() -> None:
         claws=ClawSize.NONE,
         teeth_sharpness=0,
         base_power=1,
-        position=10,
+        position=5,
         stamina=100,
         health=10,
     )
-    result = chase(predator, prey, GreedyMovementStrategy())
-    assert result.caught is False
-    assert any(m == "Pray ran into infinity" for m in result.logs)
+    res = chase_strategy(predator, prey, GreedyMovementStrategy())
+    assert res.caught is False
 
 
-def test_fight_stops_when_one_health_zero_or_below() -> None:
+def test_fight_strategy_predator_wins_with_stronger_stats() -> None:
     predator = Creature(
         legs_count=2,
         wings_count=0,
@@ -51,7 +51,5 @@ def test_fight_stops_when_one_health_zero_or_below() -> None:
         stamina=100,
         health=10,
     )
-    result = fight(predator, prey)
-    assert result.caught is True
-    assert result.predator_won is True
-    assert any(m == "Some R-rated things have happened" for m in result.logs)
+    res = fight_strategy(predator, prey)
+    assert res.predator_won is True

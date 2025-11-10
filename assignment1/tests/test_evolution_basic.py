@@ -15,5 +15,3 @@ def test_evolution_creature_fields_are_in_expected_ranges() -> None:
     assert c.position == 5
     assert 40 <= c.stamina <= 160
     assert 30 <= c.health <= 120
-
-

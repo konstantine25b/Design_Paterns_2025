@@ -50,5 +50,3 @@ def test_apply_movement_updates_position_and_stamina() -> None:
     apply_movement(c, MovementKind.RUN)
     assert c.position == 6
     assert c.stamina == 56
-
-
