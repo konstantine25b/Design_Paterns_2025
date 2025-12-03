@@ -100,9 +100,9 @@ def get_habit(
 @router.put("/habits/{habit_id}", response_model=HabitResponse)
 def update_habit(
     habit_id: uuid.UUID,
-    request: CreateHabitRequest,  # Reuse create request for update fields, or make optional fields schema
-    # For simplicity, we assume full update or partial. Let's use CreateHabitRequest but allow optional?
-    # Pydantic schema has required fields. I should make an UpdateSchema.
+    request: CreateHabitRequest,
+    # Reuse create request for update fields
+    # For simplicity, we assume full update or partial.
     # For "student-like", reusing CreateSchema implies full update.
     # I'll make a separate UpdateHabitRequest or just use params.
     # Let's assume we pass fields we want to update.

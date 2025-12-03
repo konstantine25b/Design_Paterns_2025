@@ -28,11 +28,11 @@ class CurrentStreakStrategy(StatStrategy):
 
         # Simple streak: consecutive days meeting goal
         # This assumes one log per day or we aggregate.
-        # For simplicity, let's just count compliant logs in sequence from most recent.
+        # For simplicity, count compliant logs in sequence from most recent.
         # A real streak logic is complex with dates (gaps break streak).
-        # I'll implement a basic version: compliant days in a row ending today/yesterday.
-        # But to keep "student-like" simple logic: check if latest is compliant, then previous...
-        # Actually, let's just count compliant logs in desc order until a fail/gap.
+        # Basic version: compliant days in a row ending today/yesterday.
+        # Keep "student-like" simple logic: check if latest is compliant.
+        # Count compliant logs in desc order until a fail/gap.
 
         # To handle gaps properly, we'd need date logic.
         # I'll do strict latest logs check.
