@@ -22,23 +22,8 @@ class CurrentStreakStrategy(StatStrategy):
         if not logs:
             return 0
 
-        # Sort logs by date descending
         sorted_logs = sorted(logs, key=lambda log_entry: log_entry.date, reverse=True)
         streak = 0
-
-        # Simple streak: consecutive days meeting goal
-        # This assumes one log per day or we aggregate.
-        # For simplicity, count compliant logs in sequence from most recent.
-        # A real streak logic is complex with dates (gaps break streak).
-        # Basic version: compliant days in a row ending today/yesterday.
-        # Keep "student-like" simple logic: check if latest is compliant.
-        # Count compliant logs in desc order until a fail/gap.
-
-        # To handle gaps properly, we'd need date logic.
-        # I'll do strict latest logs check.
-
-        # Let's group by date first? Or just assume logs are ordered.
-        # I'll assume daily logs for simplicity or just sequential compliant entries.
 
         for log in sorted_logs:
             if log.value >= goal:
@@ -52,7 +37,6 @@ class CompletionRateStrategy(StatStrategy):
     def calculate(self, logs: list[Log], goal: float) -> float:
         if not logs:
             return 0.0
-        # Percentage of logs meeting the goal
         compliant = sum(1 for log in logs if log.value >= goal)
         return (compliant / len(logs)) * 100.0
 

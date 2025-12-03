@@ -21,10 +21,6 @@ router = APIRouter()
 
 
 def to_response(component: HabitComponent) -> HabitResponse:
-    # Helper to convert Domain entity to Pydantic model
-    # Handle polymorphism manually or via fields
-
-    # Basic fields
     data: dict[str, Any] = {
         "id": component.id,
         "name": component.name,
@@ -101,15 +97,8 @@ def get_habit(
 def update_habit(
     habit_id: uuid.UUID,
     request: CreateHabitRequest,
-    # Reuse create request for update fields
-    # For simplicity, we assume full update or partial.
-    # For "student-like", reusing CreateSchema implies full update.
-    # I'll make a separate UpdateHabitRequest or just use params.
-    # Let's assume we pass fields we want to update.
-    # I'll use Body with optional fields? Or simpler: just expect full payload.
     service: HabitService = Depends(get_habit_service),
 ) -> HabitResponse:
-    # Using CreateHabitRequest means we must send all fields.
     updated = service.update_habit(
         habit_id,
         name=request.name,
@@ -133,8 +122,7 @@ def delete_habit(
 @router.post("/habits/{habit_id}/subhabits", status_code=status.HTTP_200_OK)
 def add_subhabit(
     habit_id: uuid.UUID,
-    child_id: uuid.UUID,  # Query or Body? Usually body {"child_id": "..."}
-    # I'll take it as query param for simplicity or body. Body is cleaner.
+    child_id: uuid.UUID,
     service: HabitService = Depends(get_habit_service),
 ) -> None:
     try:

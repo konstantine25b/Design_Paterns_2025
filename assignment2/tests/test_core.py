@@ -10,12 +10,11 @@ def test_streak_strategy() -> None:
     goal = 5.0
     today = date.today()
 
-    # 3 days streak
     logs = [
         Log(uuid.uuid4(), today, 5.0),
         Log(uuid.uuid4(), today - timedelta(days=1), 6.0),
         Log(uuid.uuid4(), today - timedelta(days=2), 5.0),
-        Log(uuid.uuid4(), today - timedelta(days=3), 2.0),  # Fail
+        Log(uuid.uuid4(), today - timedelta(days=3), 2.0),
     ]
 
     streak = strategy.calculate(logs, goal)

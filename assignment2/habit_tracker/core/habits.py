@@ -16,7 +16,7 @@ class HabitType(str, Enum):
 class Log:
     habit_id: uuid.UUID
     date: date
-    value: float  # 1.0 for boolean true, 0.0 for false, or actual number
+    value: float
 
 
 @dataclass(kw_only=True)
@@ -47,7 +47,7 @@ class HabitComponent(ABC):
 class Habit(HabitComponent):
     category: str
     type: HabitType
-    goal: float  # e.g. 1 for boolean, N for numeric
+    goal: float
     id: uuid.UUID = field(default_factory=uuid.uuid4)
     created_at: date = field(default_factory=date.today)
 
