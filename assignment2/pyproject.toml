@@ -57,6 +57,7 @@ select = [
 ]
 ignore = [
     "B008",  # Allow function calls in defaults (FastAPI Depends pattern)
+    "PT011",  # Allow broad pytest.raises for simple test cases
 ]
 
 [tool.ruff.lint.isort]
