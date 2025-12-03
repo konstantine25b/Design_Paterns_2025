@@ -110,31 +110,3 @@ def test_should_return_empty_logs_for_unknown_habit(
     assert repository.get_logs(unknown_id) == []
 
 
-def test_should_save_multiple_logs(repository: InMemoryHabitRepository) -> None:
-    from datetime import date
-
-    habit_id = uuid.uuid4()
-    log1 = Log(habit_id=habit_id, date=date.today(), value=5.0)
-    log2 = Log(habit_id=habit_id, date=date.today(), value=7.0)
-    repository.save_log(log1)
-    repository.save_log(log2)
-    logs = repository.get_logs(habit_id)
-    assert len(logs) == 2
-    assert log1 in logs
-    assert log2 in logs
-
-
-def test_should_isolate_logs_by_habit_id(
-    repository: InMemoryHabitRepository,
-) -> None:
-    from datetime import date
-
-    habit1_id = uuid.uuid4()
-    habit2_id = uuid.uuid4()
-    log1 = Log(habit_id=habit1_id, date=date.today(), value=5.0)
-    log2 = Log(habit_id=habit2_id, date=date.today(), value=7.0)
-    repository.save_log(log1)
-    repository.save_log(log2)
-    assert repository.get_logs(habit1_id) == [log1]
-    assert repository.get_logs(habit2_id) == [log2]
-

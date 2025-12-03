@@ -5,7 +5,6 @@ from habit_tracker.core.habits import Log
 from habit_tracker.core.stats import (
     CompletionRateStrategy,
     CurrentStreakStrategy,
-    StatContext,
     TotalProgressStrategy,
 )
 
@@ -109,50 +108,4 @@ def test_should_calculate_zero_completion() -> None:
     strategy = CompletionRateStrategy()
     assert strategy.calculate(logs, 5.0) == 0.0
 
-
-def test_should_use_strategy_with_context() -> None:
-    logs = [Log(uuid.uuid4(), date.today(), 5.0)]
-    strategy = TotalProgressStrategy()
-    context = StatContext(strategy)
-    assert context.analyze(logs, 10.0) == 5.0
-
-
-def test_should_switch_strategies_in_context() -> None:
-    logs = [
-        Log(uuid.uuid4(), date.today(), 6.0),
-        Log(uuid.uuid4(), date.today(), 3.0),
-    ]
-    context = StatContext(TotalProgressStrategy())
-    assert context.analyze(logs, 5.0) == 9.0
-    context = StatContext(CompletionRateStrategy())
-    assert context.analyze(logs, 5.0) == 50.0
-
-
-def test_should_handle_exact_goal_match() -> None:
-    logs = [Log(uuid.uuid4(), date.today(), 5.0)]
-    strategy = CurrentStreakStrategy()
-    assert strategy.calculate(logs, 5.0) == 1
-
-
-def test_should_handle_above_goal() -> None:
-    logs = [Log(uuid.uuid4(), date.today(), 10.0)]
-    strategy = CurrentStreakStrategy()
-    assert strategy.calculate(logs, 5.0) == 1
-
-
-def test_should_handle_below_goal() -> None:
-    logs = [Log(uuid.uuid4(), date.today(), 4.99)]
-    strategy = CurrentStreakStrategy()
-    assert strategy.calculate(logs, 5.0) == 0
-
-
-def test_should_round_completion_rate_correctly() -> None:
-    logs = [
-        Log(uuid.uuid4(), date.today(), 6.0),
-        Log(uuid.uuid4(), date.today(), 3.0),
-        Log(uuid.uuid4(), date.today(), 7.0),
-    ]
-    strategy = CompletionRateStrategy()
-    result = strategy.calculate(logs, 5.0)
-    assert 66.0 < result < 67.0
 

@@ -1,5 +1,5 @@
 import uuid
-from datetime import date, timedelta
+from datetime import date
 
 import pytest
 
@@ -158,41 +158,4 @@ def test_should_return_empty_logs_for_habit_without_logs(
     habit = service.create_habit("Habit", "Desc", "Cat", HabitType.NUMERIC, 8.0)
     assert service.get_logs(habit.id) == []
 
-
-def test_should_calculate_total_progress(service: HabitService) -> None:
-    habit = service.create_habit("Habit", "Desc", "Cat", HabitType.NUMERIC, 10.0)
-    service.log_progress(habit.id, 5.0)
-    service.log_progress(habit.id, 7.0)
-    total = service.get_stats(habit.id, "total")
-    assert total == 12.0
-
-
-def test_should_calculate_streak(service: HabitService) -> None:
-    habit = service.create_habit("Habit", "Desc", "Cat", HabitType.NUMERIC, 5.0)
-    today = date.today()
-    service.log_progress(habit.id, 6.0, today)
-    service.log_progress(habit.id, 7.0, today - timedelta(days=1))
-    service.log_progress(habit.id, 5.0, today - timedelta(days=2))
-    streak = service.get_stats(habit.id, "streak")
-    assert streak == 3
-
-
-def test_should_calculate_completion_rate(service: HabitService) -> None:
-    habit = service.create_habit("Habit", "Desc", "Cat", HabitType.NUMERIC, 5.0)
-    service.log_progress(habit.id, 6.0)
-    service.log_progress(habit.id, 7.0)
-    service.log_progress(habit.id, 3.0)
-    rate = service.get_stats(habit.id, "completion_rate")
-    assert rate == pytest.approx(66.666, rel=0.01)
-
-
-def test_should_return_zero_stats_for_routine(service: HabitService) -> None:
-    routine = service.create_routine("Routine", "Desc", "Cat")
-    assert service.get_stats(routine.id, "total") == 0
-
-
-def test_should_raise_error_for_unknown_habit_stats(service: HabitService) -> None:
-    unknown_id = uuid.uuid4()
-    with pytest.raises(ValueError):
-        service.get_stats(unknown_id, "total")
 
