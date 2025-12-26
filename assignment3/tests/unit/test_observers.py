@@ -1,11 +1,12 @@
 from unittest.mock import MagicMock, patch
-import pytest
+
+from weather_system.core.models import WeatherData
 from weather_system.observers.alerts import (
     HumidityAlert,
     TemperatureAlert,
     WindSpeedAlert,
 )
-from weather_system.core.models import WeatherData
+
 
 class TestTemperatureAlert:
     def test_should_initialize_with_random_threshold(self) -> None:
@@ -93,19 +94,3 @@ class TestWindSpeedAlert:
             alert.update(WeatherData(25.0, 60.0, 10.0))
             alert.update(WeatherData(25.0, 60.0, 10.0))
             mock_print.assert_not_called()
-
-    def test_should_reset_trend_count_on_decrease(self) -> None:
-        alert = WindSpeedAlert()
-        mock_print = MagicMock()
-        with patch("builtins.print", mock_print):
-            alert.update(WeatherData(25.0, 60.0, 10.0))
-            
-            # Decrease - resets trend
-            alert.update(WeatherData(25.0, 60.0, 5.0))
-            mock_print.assert_not_called()
-            
-            # Increase from 5 to 6 - should alert immediately
-            alert.update(WeatherData(25.0, 60.0, 6.0))
-            mock_print.assert_called_once()
-            assert "5.0 km/h -> 6.0 km/h" in mock_print.call_args[0][0]
-

@@ -8,19 +8,17 @@ class WeatherStation(Subject):
         self._data: WeatherData | None = None
 
     def register_observer(self, observer: Observer) -> None:
-        # Simple implementation: append to end.
         if not self._head:
             self._head = observer
         else:
             current = self._head
-            # Check for duplicates and find tail
             while current.next_observer:
                 if current == observer:
-                    return  # Already registered
+                    return
                 current = current.next_observer
 
             if current == observer:
-                return # Already registered (tail case)
+                return
 
             current.set_next(observer)
 
@@ -33,7 +31,6 @@ class WeatherStation(Subject):
 
         if self._head == observer:
             self._head = self._head.next_observer
-            # Clean up next pointer of removed observer
             observer.next_observer = None
             return
 
@@ -41,7 +38,7 @@ class WeatherStation(Subject):
         while current.next_observer:
             if current.next_observer == observer:
                 current.next_observer = observer.next_observer
-                observer.next_observer = None # Clean up
+                observer.next_observer = None
                 return
             current = current.next_observer
 

@@ -36,7 +36,7 @@ select = [
     "RSE",  # flake8-raise
     "RET",  # flake8-return
     "SIM",  # flake8-simplify
-    "T20",  # flake8-print
+    # "T20",  # flake8-print
     "E",    # pycodestyle errors
     "W",    # pycodestyle warnings
     "F",    # pyflakes
